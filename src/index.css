@@ -687,7 +687,7 @@ a    { text-decoration: none; }
   transition: color 0.2s;
 }
 .contact-row:hover .contact-label { color: #d4b800; }
-@media (max-width: 409px) {
+@media (min-width: 409px) {
   /* Nav */
   .nav-root { top: 6px; right: 6px; }
   .nav-img  { height: 24px; }
@@ -944,6 +944,51 @@ a    { text-decoration: none; }
   .about-timeline-item span {
     font-size: 10px;
   }
+}
+
+@media (max-width: 359px) {
+  .home-title { left: 20%; top: 24%; width: 64%; }
+  .home-desc  { left: 24%; top: 32%; width: 60%; }
+  .home-star1 { right: 6%; top: 30%; width: 60px; }
+  .home-star2 { right: 23%; top: 30%; width: 36px; }
+  .home-star3 { right: 21%; top: 38%; width: 22px; }
+  .home-face  { right: 0%; height: 42%; bottom: 21%; }
+  .about-section { padding: 24px 0; }
+  .about-shell { width: calc(100% - 12px); }
+  .about-grid { gap: 10px; }
+  .about-intro-card,
+  .about-panel { padding: 12px; border-radius: 16px; }
+  .about-kicker { font-size: 9px; letter-spacing: 0.16em; }
+  .about-name { font-size: 1.45rem; }
+  .about-role { font-size: 10px; }
+  .about-bio { font-size: 10px; line-height: 1.5; }
+  .about-contact-grid { gap: 6px; }
+  .about-contact-item { padding: 9px; }
+  .about-contact-label { font-size: 9px; }
+  .about-contact-item a,
+  .about-contact-item span { font-size: 10px; }
+  .about-panel-head { margin-bottom: 8px; gap: 6px; }
+  .about-panel-head p { font-size: 12px; }
+  .about-panel-head span { font-size: 8px; }
+  .about-expertise-grid { gap: 6px; }
+  .about-expertise-item,
+  .about-mini-item,
+  .about-timeline-item { padding: 9px; border-radius: 12px; }
+  .about-expertise-item h4,
+  .about-mini-item h4,
+  .about-timeline-item h4 { font-size: 11px; }
+  .about-expertise-item p,
+  .about-mini-item p,
+  .about-timeline-item p { font-size: 9px; line-height: 1.4; }
+  .about-timeline { gap: 6px; }
+  .about-timeline-item { gap: 8px; grid-template-columns: 10px 1fr; }
+  .about-timeline-item span {
+    grid-column: 2 / -1;
+    text-align: left;
+    margin-top: 2px;
+    font-size: 8px;
+  }
+  .about-panel-split { gap: 6px; }
 }
 
 
