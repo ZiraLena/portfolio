@@ -32,18 +32,19 @@ function Nav({ active }: { active: string }) {
     document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
   return (
     <nav className="fixed top-3 right-3 z-[100] flex flex-col items-end" style={{ gap: 0 }}>
-      <button onClick={() => scroll("home")} className="nav-btn">
+      <button onClick={() => scroll("home")} className={`nav-btn ${active === "home" ? "nav-btn--active" : ""}`} style={{ "--nav-tilt": "0deg" } as React.CSSProperties}>
         <img src={active === "home" ? A.homeActive : A.homeInactive}
-          alt="HOME" style={{ height: 30, width: "auto", display: "block" }} />
+          alt="HOME" className="nav-img" style={{ height: 35, width: "auto", display: "block" }} />
       </button>
-      <button onClick={() => scroll("contacts")} className="nav-btn" style={{ marginTop: -2 }}>
-        <img src={active === "contacts" ? A.contactsActive : A.contactsInactive} alt="CONTACTS"
-          style={{ height: 30, width: "auto", display: "block",
-            filter: active === "contacts" ? "brightness(2)" : "none" }} />
-      </button>
-      <button onClick={() => scroll("works")} className="nav-btn" style={{ marginTop: -6 }}>
+      <button onClick={() => scroll("works")} className={`nav-btn ${active === "works" ? "nav-btn--active" : ""}`} style={{ marginTop: -7, "--nav-tilt": "1deg" } as React.CSSProperties}>
         <img src={active === "works" ? A.worksActive : A.worksInactive}
-          alt="WORKS" style={{ height: 40, width: "auto", display: "block" }} />
+          alt="WORKS" className="nav-img" style={{ height: 45, width: "auto", display: "block" }} />
+      </button>
+      <button onClick={() => scroll("contacts")} className={`nav-btn ${active === "contacts" ? "nav-btn--active" : ""}`} style={{ marginTop: -9, "--nav-tilt": "-8deg" } as React.CSSProperties}>
+        <img src={active === "contacts" ? A.contactsActive : A.contactsInactive} alt="CONTACTS"
+          className="nav-img"
+          style={{ height: 35, width: "auto", display: "block",
+            filter: active === "contacts" ? "brightness(2)" : "none" }} />
       </button>
     </nav>
   );
@@ -116,10 +117,8 @@ function HomeSection() {
 
       {/* ── LEFT: 4 social link rounded rectangles ── */}
       {/* Below lines, sits bottom ~8-14% */}
-      <div className="absolute z-20 flex gap-2"
+      <div className="home-social home-social-links absolute z-20 flex gap-2"
         style={{
-          right: "32%",
-          bottom: "8%",
           transition: "opacity 0.7s 0.58s, transform 0.7s 0.58s",
           opacity: vis ? 1 : 0,
           transform: vis ? "translateY(0)" : "translateY(16px)",
@@ -134,9 +133,8 @@ function HomeSection() {
             target="_blank"
             rel="noreferrer"
             title={label}
-            className="social-pill group flex items-center justify-center"
-            style={{ width: 42, height: 42 }}>
-            <span className="text-white text-xs font-bold group-hover:text-[#d4b800] transition-colors">
+            className="social-pill home-social-link group flex items-center justify-center">
+            <span className="home-social-icon text-white text-xs font-bold group-hover:text-[#d4b800] transition-colors">
               {icon}
             </span>
           </a>
@@ -153,17 +151,19 @@ function HomeSection() {
         }} />
 
       {/* ── RIGHT: Contact CTA — bottom-right, left of face ── */}
-      <div className="absolute z-20 flex items-center gap-3"
+      <div className="home-contact-cta absolute z-20 flex items-center gap-3"
         style={{
-          right: "45%",
+          left: "50%",
+          right: "auto",
           bottom: "0%",
           transition: "opacity 0.7s 0.62s",
           opacity: vis ? 1 : 0,
+          transform: vis ? "translateX(-50%) translateY(0)" : "translateX(-50%) translateY(16px)",
         }}>
-        <img src={A.contactIcon} alt="Contact" style={{ width: 36, height: 36, objectFit: "contain" }} />
-        <div>
-          <p className="text-white font-bold leading-tight" style={{ fontSize: 13 }}>Contact</p>
-          <p className="text-white font-bold leading-tight" style={{ fontSize: 13 }}>Let's Create</p>
+        <img src={A.contactIcon} alt="Contact" className="home-contact-icon" />
+        <div className="home-contact-copy">
+          <p className="home-contact-text text-white font-bold leading-tight" style={{ fontSize: 13 }}>Contact</p>
+          <p className="home-contact-text text-white font-bold leading-tight" style={{ fontSize: 13 }}>Let's Create</p>
         </div>
       </div>
 
@@ -192,6 +192,157 @@ function HomeSection() {
           opacity: vis ? 1 : 0,
           transform: vis ? "scale(1)" : "scale(0.4)",
         }} />
+    </section>
+  );
+}
+
+// ─── ABOUT ──────────────────────────────────────────────────────────────────
+function AboutSection() {
+  const ref = useRef<HTMLDivElement>(null);
+  const [vis, setVis] = useState(false);
+
+  useEffect(() => {
+    const obs = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) setVis(true); },
+      { threshold: 0.2 }
+    );
+    if (ref.current) obs.observe(ref.current);
+    return () => obs.disconnect();
+  }, []);
+
+  const expertise = [
+    { title: "UI Design", desc: "Clean layouts, visual hierarchy, and interface systems." },
+    { title: "Frontend", desc: "HTML, CSS, JavaScript, and responsive implementation." },
+    { title: "Game Art", desc: "2D assets, pixel art, sprites, and visual polish." },
+    { title: "Blender", desc: "3D modeling and render-ready scene composition." },
+    { title: "Firebase / Supabase", desc: "Database-backed workflows and app integration." },
+    { title: "Problem Solving", desc: "Structured troubleshooting and collaborative thinking." },
+  ];
+
+  const education = [
+    { school: "Pamantasan ng Lungsod ng Valenzuela", role: "Bachelor of Science in Information Technology", date: "2023 - Present" },
+    { school: "Valenzuela City School of Mathematics and Science", role: "Senior High School - STEM", date: "2021 - 2023" },
+    { school: "Valenzuela City School of Mathematics and Science", role: "Junior High School", date: "2017 - 2021" },
+    { school: "Caruhatan East Elementary School", role: "Elementary Education", date: "2011 - 2017" },
+  ];
+
+  const experience = [
+    { title: "ICT Work Immersion", meta: "Valenzuela Information & Communication Office", date: "March 20, 2023 - March 31, 2023" },
+  ];
+
+  const projects = [
+    { title: "MATAYA-TAYA", meta: "Endless runner built in Unity with responsive gameplay flow." },
+    { title: "Ready-Set-Bag!", meta: "2D interactive simulation for Android focused on user interaction." },
+  ];
+
+  return (
+    <section id="about" ref={ref} className="about-section">
+      <div className="dot-pattern about-dots" />
+      <div className="about-orb about-orb-one" />
+      <div className="about-orb about-orb-two" />
+
+      <div className="about-shell"
+        style={{
+          opacity: vis ? 1 : 0,
+          transform: vis ? "translateY(0)" : "translateY(24px)",
+          transition: "opacity 0.7s, transform 0.7s",
+        }}>
+        <div className="about-grid">
+          <section className="about-intro-card about-card about-card--intro">
+          <p className="about-kicker">HELLO, I&apos;M</p>
+          <h2 className="about-name">LEXUS GABRIEL D. NAMA</h2>
+          <h3 className="about-role">Multidisciplinary Developer & Designer</h3>
+          <p className="about-bio">
+            Multidisciplinary developer and designer currently pursuing a Bachelor of Science in
+            Information Technology at Pamantasan ng Lungsod ng Valenzuela. I create functional
+            digital interfaces and immersive game assets with a hands-on approach to UI design,
+            pixel art, and responsive web architecture.
+          </p>
+
+          <div className="about-contact-grid">
+            <div className="about-contact-item">
+              <span className="about-contact-label">Email</span>
+              <a href="mailto:lexusnama@gmail.com">lexusnama@gmail.com</a>
+            </div>
+            <div className="about-contact-item">
+              <span className="about-contact-label">Phone</span>
+              <a href="tel:+639165741371">+63 916 574 371</a>
+            </div>
+            <div className="about-contact-item">
+              <span className="about-contact-label">Location</span>
+              <span>Valenzuela City, Philippines</span>
+            </div>
+          </div>
+          </section>
+
+          <section className="about-panel about-card about-card--expertise">
+            <div className="about-panel-head">
+              <p>Area of Expertise</p>
+              <span>Core skills and strengths</span>
+            </div>
+            <div className="about-expertise-grid">
+              {expertise.map((item) => (
+                <article key={item.title} className="about-expertise-item">
+                  <h4>{item.title}</h4>
+                  <p>{item.desc}</p>
+                </article>
+              ))}
+            </div>
+          </section>
+
+          <section className="about-panel about-card about-card--education">
+            <div className="about-panel-head">
+              <p>Educational Background</p>
+              <span>Academic progression and milestones</span>
+            </div>
+            <div className="about-timeline">
+              {education.map((item) => (
+                <article key={`${item.school}-${item.date}`} className="about-timeline-item">
+                  <div className="about-timeline-dot" />
+                  <div>
+                    <h4>{item.school}</h4>
+                    <p>{item.role}</p>
+                  </div>
+                  <span>{item.date}</span>
+                </article>
+              ))}
+            </div>
+          </section>
+
+          <section className="about-panel about-card about-card--experience about-panel-split">
+            <article>
+              <div className="about-panel-head">
+                <p>Experience</p>
+                <span>Hands-on industry exposure</span>
+              </div>
+              <div className="about-mini-list">
+                {experience.map((item) => (
+                  <div key={item.title} className="about-mini-item">
+                    <h4>{item.title}</h4>
+                    <p>{item.meta}</p>
+                    <span>{item.date}</span>
+                  </div>
+                ))}
+              </div>
+            </article>
+
+            <article>
+              <div className="about-panel-head">
+                <p>Selected Projects</p>
+                <span>Personal and academic work</span>
+              </div>
+              <div className="about-mini-list">
+                {projects.map((item) => (
+                  <div key={item.title} className="about-mini-item">
+                    <h4>{item.title}</h4>
+                    <p>{item.meta}</p>
+                  </div>
+                ))}
+              </div>
+            </article>
+          </section>
+        </div>
+      </div>
     </section>
   );
 }
@@ -278,7 +429,7 @@ function WorksFolderSection() {
     {
       featImg:  "/project/graphic-featured.jpg",
       featTitle: "Graphic Designs",
-      featDesc:  "layout, and print design. Tools: Photoshop, Canva, Illustrator.",
+      featDesc:  "Posters, logos, and publication layouts with a focus on clean hierarchy and print-ready presentation. Tools: Photoshop, Canva, Illustrator.",
       cards: [
         { img: "/project/graphic-1.png", label: "Poster" },
         { img: "/project/graphic-2.png", label: "Poster" },
@@ -289,7 +440,7 @@ function WorksFolderSection() {
     {
       featImg:  "/project/gameart-featured.png",
       featTitle: "Ready-Set-Bag Project",
-      featDesc:  "Character sprites, UI assets, and environment tiles. Tools: Aseprite, Photoshop.",
+      featDesc:  "2D character assets, UI elements, and environment tiles created for the Ready-Set-Bag project. Tools: Aseprite, Photoshop.",
       cards: [
         { img: "/project/gameart-1.png", label: "Character Sheet" },
         { img: "/project/gameart-2.gif", label: "Character Sample Animation" },
@@ -300,7 +451,7 @@ function WorksFolderSection() {
     {
       featImg:  "/project/web-featured.png",
       featTitle: "ARTA CSS PROJECT",
-      featDesc:  "City Government of Valenzuela Automation of ARTA-Compliant Customer Satisfaction Survey with Data Gathering and Analysis." + " Responsive web apps and UI components. Tools: Next.js, React, Tailwind, Figma.",
+      featDesc:  "A responsive ARTA-compliant customer satisfaction and data gathering platform for the City Government of Valenzuela. Built with Next.js, React, Tailwind, and Figma.",
       cards: [
         { img: "/project/web-1.png", label: "Landing Page" },
         { img: "/project/web-2.png", label: "Login Page" },
@@ -311,7 +462,7 @@ function WorksFolderSection() {
     {
       featImg:  "/project/3d-featured.png",
       featTitle: "3D Art Projects",
-      featDesc:  "3D models and renders. Tools: Blender, 3ds Max.",
+      featDesc:  "3D modeling and scene rendering work created in Blender and 3ds Max.",
       cards: [
         { img: "/project/3d-1.mp4", label: "House 3d Model" },
         { img: "/project/3d-2.mp4", label: "House Scene Render" },
@@ -322,7 +473,7 @@ function WorksFolderSection() {
     {
       featImg:  "/project/networking-featured.png",
       featTitle: "Networking",
-      featDesc:  "Network setup, troubleshooting, and Security in Networking Academy Online Courses.",
+      featDesc:  "Networking fundamentals, device configuration, troubleshooting, and security coursework from Cisco NetAcad.",
       cards: [
         { img: "/project/networking-1.png", label: "Network Support and Security Cisco NetAcad Badge" },
         { img: "/project/networking-2.png", label: "Network Addressing and Basic Troubleshooting Cisco NetAcad Badge" },
@@ -462,47 +613,96 @@ function ContactsSection() {
     { icon: "📷", label: "@lexusnama",                href: "https://www.instagram.com/lexusnama/" },
   ];
 
+  const resumeHref = "/assets/NAMA CV Resume.pdf";
+
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const formData = new FormData(event.currentTarget);
+    const fullName = String(formData.get("name") ?? "").trim();
+    const email = String(formData.get("email") ?? "").trim();
+    const subject = String(formData.get("subject") ?? "").trim();
+    const message = String(formData.get("message") ?? "").trim();
+
+    const body = [
+      `Name: ${fullName}`,
+      `Email: ${email}`,
+      "",
+      message,
+    ].join("\n");
+
+    const mailto = `mailto:lexusnama@gmail.com?subject=${encodeURIComponent(subject || "Portfolio inquiry")}&body=${encodeURIComponent(body)}`;
+    window.location.href = mailto;
+  };
+
   return (
     <section id="contacts" ref={ref}
+      className="contacts-section"
       style={{
-        position: "relative", width: "100%", height: "100vh",
         overflow: "hidden",
         display: "flex", alignItems: "center", justifyContent: "center",
       }}>
 
       <img src={A.worksBg} alt="" aria-hidden
-        style={{ position: "absolute", inset: 0, width: "100%", height: "100%",
-          objectFit: "cover", pointerEvents: "none", userSelect: "none" }} />
-      <div className="dot-pattern" style={{ position: "absolute", inset: 0, pointerEvents: "none" }} />
+        className="contacts-bg" />
+      <div className="dot-pattern contacts-dots" />
 
       {/* Centered content wrapper */}
-      <div style={{
-        position: "relative", zIndex: 10,
-        display: "flex", flexDirection: "column", alignItems: "center",
+      <div className="contacts-inner"
+        style={{
         transition: "opacity 0.7s, transform 0.7s",
         opacity: vis ? 1 : 0,
         transform: vis ? "translateY(0)" : "translateY(32px)",
       }}>
-        <h2 className="works-title text-white" style={{ marginBottom: 32, textAlign: "center" }}>CONTACTS</h2>
+        <h2 className="works-title text-white contacts-heading">CONTACTS</h2>
 
-        {/* Contact rows — left-aligned list, centered as a block */}
-        <div style={{ display: "flex", flexDirection: "column", gap: 18 }}>
-          {links.map(({ icon, label, href }, i) => (
-            <a key={label} href={href}
-              style={{
-                display: "flex", alignItems: "center", gap: 14,
-                textDecoration: "none",
-                transition: `opacity 0.5s ${0.2 + i * 0.1}s, transform 0.5s ${0.2 + i * 0.1}s`,
-                opacity: vis ? 1 : 0,
-                transform: vis ? "translateX(0)" : "translateX(-24px)",
-              }}
-              className="contact-row group">
-              <div className="contact-icon-box">
-                <span style={{ fontSize: 16 }}>{icon}</span>
-              </div>
-              <span className="contact-label">{label}</span>
+        <div className="contacts-panel">
+          <div className="contacts-sidebar">
+            <p className="contacts-copy">
+              Send a message through the form or download my resume below.
+            </p>
+
+            <a href={resumeHref} download className="resume-btn">
+              Download Resume
             </a>
-          ))}
+
+            <div className="contacts-links">
+              {links.map(({ icon, label, href }, i) => (
+                <a key={label} href={href}
+                  style={{
+                    transition: `opacity 0.5s ${0.2 + i * 0.1}s, transform 0.5s ${0.2 + i * 0.1}s`,
+                    opacity: vis ? 1 : 0,
+                    transform: vis ? "translateX(0)" : "translateX(-24px)",
+                  }}
+                  className="contact-row group">
+                  <div className="contact-icon-box">
+                    <span style={{ fontSize: 16 }}>{icon}</span>
+                  </div>
+                  <span className="contact-label">{label}</span>
+                </a>
+              ))}
+            </div>
+          </div>
+
+          <form className="contact-form" onSubmit={handleSubmit}>
+            <label className="contact-field">
+              <span>Name</span>
+              <input name="name" type="text" placeholder="Your name" required />
+            </label>
+            <label className="contact-field">
+              <span>Email</span>
+              <input name="email" type="email" placeholder="you@example.com" required />
+            </label>
+            <label className="contact-field">
+              <span>Subject</span>
+              <input name="subject" type="text" placeholder="Project inquiry" required />
+            </label>
+            <label className="contact-field contact-field--message">
+              <span>Message</span>
+              <textarea name="message" placeholder="Write your message here" rows={6} required />
+            </label>
+
+            <button type="submit" className="contact-submit">Send Message</button>
+          </form>
         </div>
       </div>
     </section>
@@ -531,6 +731,7 @@ export default function App() {
     <div style={{ display: "flex", flexDirection: "column", width: "100%" }}>
       <Nav active={activeNav} />
       <HomeSection />
+      <AboutSection />
       <WorksTitleSection />
       <WorksFolderSection />
       <ContactsSection />
