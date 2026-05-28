@@ -4,12 +4,8 @@ import "./index.css";
 const A = {
   bgIndex:          "/assets/BG-Index-design.png",
   cutout:           "/assets/Cutout-Design.png",
-  title:            "/assets/title.png",
-  desc:             "/assets/Desc.png",
-  face:             "/assets/Face.png",
-  star1:            "/assets/Star1.png",
-  star2:            "/assets/Star2.png",
-  star3:            "/assets/Star3.png",
+  face:             "/assets/face.png",
+  stars:            "/assets/stars.png",
   lines:            "/assets/Lines.png",
   contactIcon:      "/assets/Contact-Icon.png",
   homeActive:       "/assets/HOME-Active.png",
@@ -58,140 +54,56 @@ function HomeSection() {
   const [vis, setVis] = useState(false);
   useEffect(() => { const t = setTimeout(() => setVis(true), 80); return () => clearTimeout(t); }, []);
 
-  const fade = (delay: number, y = 6) =>
-    `transition-all duration-700 ${vis ? "opacity-100 translate-y-0" : `opacity-0 translate-y-[${y}px]`}`;
-
   return (
-    <section id="home" className="relative w-full h-screen overflow-hidden bg-[#1a1a1a]">
+    <section id="home" className={`home-section ${vis ? "home-section--visible" : ""}`}>
+      <img src={A.bgIndex} alt="" aria-hidden className="home-bg" />
+      <div className="dot-pattern home-dots" />
+      <img src={A.cutout} alt="" aria-hidden className="home-cutout" />
 
-      {/* BG radial graphic — full cover, dimmed */}
-      <img src={A.bgIndex} alt="" aria-hidden
-        className="absolute inset-0 w-full h-full object-cover pointer-events-none select-none"
-        style={{ opacity: 0.35 }} />
+      <div className="home-layout">
+        <div className="home-copy">
+          <div className="home-copy-bottom">
+            <img src={A.lines} alt="" aria-hidden className="home-copy-lines" />
 
-      {/* Dot pattern */}
-      <div className="dot-pattern absolute inset-0 pointer-events-none" />
+            <div className="home-copy-social">
+              {[
+                { label: "GitHub", icon: "⌥", href: "https://github.com/ZiraLena" },
+                { label: "LinkedIn", icon: "in", href: "https://www.linkedin.com/in/lexus-nama-a23b54269/" },
+                { label: "Facebook", icon: "f", href: "https://web.facebook.com/kiyotaka.ayanokoji.7792/" },
+                { label: "Instagram", icon: "◎", href: "https://www.instagram.com/lexusnama/" },
+              ].map(({ label, icon, href }) => (
+                <a
+                  key={label}
+                  href={href}
+                  target="_blank"
+                  rel="noreferrer"
+                  title={label}
+                  className="social-pill"
+                >
+                  <span className="home-social-icon">
+                    {icon}
+                  </span>
+                </a>
+              ))}
+            </div>
+          </div>
+        </div>
 
-      {/* ── LEFT: Cutout / tape strip — left edge, full height ── */}
-      <img src={A.cutout} alt="" aria-hidden
-        className="absolute left-0 top-0 z-20 pointer-events-none select-none"
-        style={{
-          height: "100%", width: "auto",
-          transition: "opacity 0.7s, transform 0.7s",
-          opacity: vis ? 1 : 0,
-          transform: vis ? "translateX(0)" : "translateX(-8px)",
-          transitionDelay: "0.1s"
-        }} />
-
-      {/* ── LEFT: PORTFOLIO title graphic ── */}
-      {/* Sits upper-left, roughly top 20–45% of height */}
-      <img src={A.title} alt="PORTFOLIO"
-        className="home-title"
-        style={{
-          transition: "opacity 0.7s 0.25s, transform 0.7s 0.25s",
-          opacity: vis ? 1 : 0,
-          transform: vis ? "translateY(0)" : "translateY(20px)",
-        }} />
-
-      {/* ── LEFT: DESC ribbon — directly below title, small gap ── */}
-      <img src={A.desc} alt="Graphic Design | Game Art | Web/Frontend Dev | 3D Artist | Networking"
-        className="home-desc"
-        style={{
-          transition: "opacity 0.7s 0.38s, transform 0.7s 0.38s",
-          opacity: vis ? 1 : 0,
-          transform: vis ? "translateY(0)" : "translateY(20px)",
-        }} />
-
-      {/* ── LEFT: Lines asset — horizontal, below desc, above social row ── */}
-      {/* Reference: starts around x=30% to x=60%, thin horizontal bar */}
-      <img src={A.lines} alt="" aria-hidden
-        className="absolute z-20"
-        style={{
-          right: "0",
-          bottom: "19%",
-          width: "50%",
-          transition: "opacity 0.7s 0.52s, transform 0.7s 0.52s",
-          opacity: vis ? 1 : 0,
-          transform: vis ? "translateY(0)" : "translateY(16px)",
-        }} />
-
-      {/* ── LEFT: 4 social link rounded rectangles ── */}
-      {/* Below lines, sits bottom ~8-14% */}
-      <div className="home-social home-social-links absolute z-20 flex gap-2"
-        style={{
-          transition: "opacity 0.7s 0.58s, transform 0.7s 0.58s",
-          opacity: vis ? 1 : 0,
-          transform: vis ? "translateY(0)" : "translateY(16px)",
-        }}>
-        {[
-          { label: "GitHub",    icon: "⌥", href: "https://github.com/ZiraLena" },
-          { label: "LinkedIn",  icon: "in", href: "https://www.linkedin.com/in/lexus-nama-a23b54269/" },
-          { label: "Facebook",  icon: "f", href: "https://web.facebook.com/kiyotaka.ayanokoji.7792/" },
-          { label: "Instagram", icon: "◎", href: "https://www.instagram.com/lexusnama/" },
-        ].map(({ label, icon, href }) => (
-          <a key={label} href={href}
-            target="_blank"
-            rel="noreferrer"
-            title={label}
-            className="social-pill home-social-link group flex items-center justify-center">
-            <span className="home-social-icon text-white text-xs font-bold group-hover:text-[#d4b800] transition-colors">
-              {icon}
-            </span>
-          </a>
-        ))}
-      </div>
-
-      {/* ── RIGHT: Face — bottom-anchored, right of center ── */}
-      <img src={A.face} alt="Portfolio owner"
-        className="home-face"
-        style={{
-          transition: "opacity 0.7s 0.42s, transform 0.7s 0.42s",
-          opacity: vis ? 1 : 0,
-          transform: vis ? "translateY(0)" : "translateY(28px)",
-        }} />
-
-      {/* ── RIGHT: Contact CTA — bottom-right, left of face ── */}
-      <div className="home-contact-cta absolute z-20 flex items-center gap-3"
-        style={{
-          left: "50%",
-          right: "auto",
-          bottom: "0%",
-          transition: "opacity 0.7s 0.62s",
-          opacity: vis ? 1 : 0,
-          transform: vis ? "translateX(-50%) translateY(0)" : "translateX(-50%) translateY(16px)",
-        }}>
-        <img src={A.contactIcon} alt="Contact" className="home-contact-icon" />
-        <div className="home-contact-copy">
-          <p className="home-contact-text text-white font-bold leading-tight" style={{ fontSize: 13 }}>Contact</p>
-          <p className="home-contact-text text-white font-bold leading-tight" style={{ fontSize: 13 }}>Let's Create</p>
+        <div className="home-visual">
+          <div className="home-visual-wrap">
+            <img src={A.face} alt="Portfolio owner" className="home-visual-face" />
+            <img src={A.stars} alt="" aria-hidden className="home-visual-stars" />
+          </div>
         </div>
       </div>
 
-      {/* ── Stars: near face shoulder / upper torso area ── */}
-      {/* Star1 large — just left-of-face, upper area */}
-      <img src={A.star1} alt="" aria-hidden
-        className="home-star home-star1"
-        style={{
-          transition: "opacity 0.5s 0.7s, transform 0.5s 0.7s",
-          opacity: vis ? 1 : 0,
-          transform: vis ? "scale(1)" : "scale(0.4)",
-        }} />
-      {/* Star2 medium */}
-      <img src={A.star2} alt="" aria-hidden
-        className="home-star home-star2"
-        style={{
-          transition: "opacity 0.5s 0.85s, transform 0.5s 0.85s",
-          opacity: vis ? 1 : 0,
-          transform: vis ? "scale(1)" : "scale(0.4)",
-        }} />
-      {/* Star3 small */}
-      <img src={A.star3} alt="" aria-hidden
-        className="home-star home-star3"
-        style={{
-          transition: "opacity 0.5s 1s, transform 0.5s 1s",
-          opacity: vis ? 1 : 0,
-          transform: vis ? "scale(1)" : "scale(0.4)",
-        }} />
+      <div className="home-contact-cta">
+        <img src={A.contactIcon} alt="Contact" className="home-contact-icon" />
+        <div className="home-contact-copy">
+          <p className="home-contact-text">Contact</p>
+          <p className="home-contact-text">Let's Create</p>
+        </div>
+      </div>
     </section>
   );
 }
